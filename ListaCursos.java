@@ -2,31 +2,41 @@
 public class ListaCursos {
     private CelulaCurso primeiro;
     private CelulaCurso ultimo;
-    private int codCurso;
-    private String nomeCurso;
-    private double qtdVagas;
+
 
     public ListaCursos(){
-
+        primeiro = new CelulaCurso();
+        ultimo = primeiro;
     }
 
     public void inserirFim(Curso x){
-
+        ultimo.prox = new CelulaCurso();
+        ultimo = ultimo.prox;
     }
 
     public String exibirCursos(){
-        return null;
+        String exibe = "";
+        CelulaCurso tmp = primeiro.prox;
+
+        while(tmp != null){
+            exibe += tmp.elemento.toString();
+            tmp = tmp.prox;
+        }
+        return exibe;
 
     }
 
-    public Curso pesquisar(int codCurso){
+    public Curso pesquisar(int codigoCurso){
+        CelulaCurso tmp = primeiro.prox;
+        while(tmp != null){
+            if(tmp.elemento.getCodCurso() == codigoCurso){
+                return tmp.elemento;
+            }
+            tmp = tmp.prox;
+        }
         return null;
+
         
     }
 
-    public void inserirFim(int codCurso2, String nomeCurso2, double qtdVagas2) {
-        
-    }
-
-    
 }

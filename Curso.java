@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Curso {
@@ -8,27 +9,31 @@ public class Curso {
     private ArrayList<Candidato> listaAprovados;
     private Queue<Candidato> listaEspera;
   
-    
+    public Curso(){
+        listaAprovados = new ArrayList<>();
+        listaEspera = new LinkedList<>();
+    }
 
-    public Curso(int codCurso, String nomeCurso, int qtdVagas, ArrayList<Candidato> listaAprovados,
-            Queue<Candidato> listaEspera) {
+    public Curso(int codCurso, String nomeCurso, int qtdVagas) {
         this.codCurso = codCurso;
         this.nomeCurso = nomeCurso;
         this.qtdVagas = qtdVagas;
-        this.listaAprovados = listaAprovados;
-        this.listaEspera = listaEspera;
+        listaAprovados = new ArrayList<>();
+        listaEspera = new LinkedList<>();
     }
 
-    public Curso(String[] valorN, int codCurso2, String nomeCurso2, double qtdVagas2) {
+    public boolean inserirListaAprovados(Candidato candidato){
+        if(listaAprovados.size() < qtdVagas){
+            listaAprovados.add(candidato);
+            return true;
+        }
+        return false;
     }
 
     public void inserirFilaEspera(Candidato candidato){
-
+        listaEspera.add(candidato);
     }
 
-    public void inserirListaAprovados(Candidato candidato){
-
-    }
 
     public int getCodCurso() {
         return codCurso;

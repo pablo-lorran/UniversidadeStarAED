@@ -1,8 +1,5 @@
 
 public class Candidato {
-    public static int getNotaLing;
-    public static int getNotaMat;
-    public static int getNotaRed;
     private String nomeCandidato;
     private double notaRed;
     private double notaMat;
@@ -58,7 +55,10 @@ public class Candidato {
         this.codCursoOp2 = codCursoOp2;
     }
 
-    public double notaMedia(){
+    public void setMedia(int notaMedia){
+        this.notaMedia = (notaRed + notaMat + notaLing)/3;
+    }
+    public double getnotaMedia(){
         return (notaRed + notaMat + notaLing)/3;
     }
 
