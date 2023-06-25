@@ -6,11 +6,11 @@ import java.util.Scanner;
 
 public class Vestibular {
     private ListaCursos cursos;
-    private Candidato [] candidatos;
+    private Candidato[] candidatos;
     private int qtdCursos;
     private int qtdCandidatos;
 
-    public Vestibular(){
+    public Vestibular() {
         cursos = new ListaCursos();
         candidatos = new Candidato[1000];
         qtdCursos = 0;
@@ -24,23 +24,22 @@ public class Vestibular {
         this.qtdCandidatos = qtdCandidatos;
     }
 
-    public void ordenarCandidatos(){
+    public void ordenarCandidatos() {
 
     }
 
-    public void arquivoEntrada(String arqEntrada){
-                try{
-            Scanner arqLeitura = new Scanner(new FileInputStream(arqEntrada),"UTF-8");
-            
+    public void arquivoEntrada(String arqEntrada) {
+        try {
+            Scanner arqLeitura = new Scanner(new FileInputStream(arqEntrada), "UTF-8");
+
             String lendoMN = arqLeitura.nextLine();
-            String [] NM = lendoMN.split(";");
+            String[] NM = lendoMN.split(";");
             int qtdCursos = Integer.parseInt(NM[0]);
             int qtdCandidatos = Integer.parseInt(NM[1]);
-            
-            
-            for(int i = 0; i < qtdCursos; i++){
+
+            for (int i = 0; i < qtdCursos; i++) {
                 String linhaN = arqLeitura.nextLine();
-                String [] valorN = linhaN.split(";");
+                String[] valorN = linhaN.split(";");
 
                 int codCurso = Integer.parseInt(valorN[0]);
                 String nomeCurso = valorN[1];
@@ -48,9 +47,9 @@ public class Vestibular {
                 cursos.inserirFim(new Curso(codCurso, nomeCurso, qtdVagas));
             }
 
-            for(int j = 0; j < qtdCandidatos; j++){
+            for (int j = 0; j < qtdCandidatos; j++) {
                 String linhaM = arqLeitura.nextLine();
-                String [] valorM = linhaM.split(";");
+                String[] valorM = linhaM.split(";");
 
                 String nomeCandidato = valorM[0];
                 double notaRed = Double.parseDouble(valorM[1]);
@@ -60,51 +59,67 @@ public class Vestibular {
                 int codCursoOp2 = Integer.parseInt(valorM[5]);
 
                 candidatos[j] = new Candidato(nomeCandidato, notaRed, notaMat, notaLing, codCursoOp1, codCursoOp2);
-
             }
-            
+
         } catch (IOException e) {
-            System.out.println("ERROR!");
+            System.out.println("Erro na leitura do arquivo de entrada!");
+        } catch (NumberFormatException e) {
+            System.out.println("Erro na conversão de um valor numérico no arquivo de entrada!");
+
         }
     }
-    
-    public void arquivoSaida(String arqEntrada){
-        try{
-            Formatter arqSaida = new Formatter(arqEntrada, "UTF-8");
-            
-            for(int i = 0; i < qtdCursos; i++){
+
+    public void arquivoSaida(String arqSaida) {
+        try {
+            Formatter formatter = new Formatter(arqSaida, "UTF-8");
+
+            for (int i = 0; i < qtdCursos; i++) {
                 Curso curso = cursos.pesquisar(i + 1);
-                arqSaida.format(curso.getNomeCurso(), curso.getListaAprovados().get(curso.getListaAprovados().size() - 1).getnotaMedia());
+                formatter.format("%s %.2f%n", curso.getNomeCurso(),
+                        curso.getListaAprovados().get(curso.getListaAprovados().size() - 1).getnotaMedia());
             }
 
-            for(int j = 0; j < qtdCandidatos; j++){
-                arqSaida.format(candidatos[j].getNomeCandidato(), candidatos[j].getnotaMedia());
+            for (int j = 0; j < qtdCandidatos; j++) {
+                formatter.format("%s %.2f%n", candidatos[j].getNomeCandidato(), candidatos[j].getnotaMedia());
             }
 
-            arqSaida.close();
-        } catch (IOException e){
+            formatter.close();
+        } catch (IOException e) {
             System.out.println("ERRO!");
         }
     }
 
-    public void ordenaDados(){
+    public void ordenaDados() {
 
     }
 
-    public void calcularResultado(){
-        for(int i = 0; i < qtdCandidatos; i++){
+    public void calcularResultado() {
+        for (int i = 0; i < qtdCandidatos; i++) {
             Candidato candidato = candidatos[i];
             Curso op1Curso = cursos.pesquisar(candidato.getCodCursoOp1());
             Curso op2Curso = cursos.pesquisar(candidato.getCodCursoOp2());
 
-            if(op1Curso.inserirListaAprovados(candidato)){
-                if(op2Curso.inserirListaAprovados(candidato)){
+            if (op1Curso.inserirListaAprovados(candidato)) {
+                if (op2Curso.inserirListaAprovados(candidato)) {
                     op2Curso.getListaAprovados().remove(candidato);
                     op1Curso.inserirListaAprovados(candidato);
                 }
-            } else{
+            } else {
                 op1Curso.inserirFilaEspera(candidato);
                 op2Curso.inserirFilaEspera(candidato);
+            }
+        }
+
+        for (int i = 0; i < qtdCursos; i++) {
+            Curso curso = cursos.pesquisar(i + 1);
+            System.out.println("Curso: " + curso.getNomeCurso());
+            System.out.println("Selecionados:");
+            for (Candidato candidato : curso.getListaAprovados()) {
+                System.out.println(candidato.getNomeCandidato() + " " + candidato.getnotaMedia());
+            }
+            System.out.println("Fila de Espera:");
+            for (Candidato candidato : curso.getListaEspera()) {
+                System.out.println(candidato.getNomeCandidato() + " " + candidato.getnotaMedia());
             }
         }
     }
