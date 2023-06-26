@@ -1,42 +1,36 @@
-Administração 875.00
+Matemática 733.33
 Selecionados
-Gabriela Almeida 916.67
-Diego Oliveira 833.33
+Mickey Mouse 766.67
+Pato Donald 733.33
+Bob Esponja 700.00
 Fila de Espera
-Diego Oliveira 833.33
-Guilherme Souza 816.67
-Roberto Lima 683.33
+Pato Donald 733.33
+Bob Esponja 700.00
 
-Contabilidade 744.44
+Física 733.33
 Selecionados
-Marcelo Lima 800.00
-Larissa Silva 733.33
-Amanda Souza 700.00
+Pato Donald 733.33
 Fila de Espera
-Larissa Silva 733.33
-Amanda Souza 700.00
-Andre Santos 600.00
+Bob Esponja 700.00
+Tio Patinhas 666.67
+Peppa Pig 633.33
 
-Enfermagem 733.33
+Química 738.89
 Selecionados
-Isabela Rodrigues 733.33
+Deadpool 800.00
+Peter Parker 783.33
+Peppa Pig 633.33
 Fila de Espera
-Amanda Souza 700.00
+Peter Parker 783.33
+Peppa Pig 633.33
+Super Mario Bros 566.67
 
-Pedagogia 791.67
+Estatística 672.22
 Selecionados
-Patrícia Costa 900.00
-Roberto Lima 683.33
+Peter Parker 783.33
+Tio Patinhas 666.67
+Super Mario Bros 566.67
 Fila de Espera
-Roberto Lima 683.33
-
-Radiologia 750.00
-Selecionados
-Diego Oliveira 833.33
-Guilherme Souza 816.67
-Andre Santos 600.00
-Fila de Espera
-Guilherme Souza 816.67
-Larissa Silva 733.33
-Andre Santos 600.00
+Tio Patinhas 666.67
+Super Mario Bros 566.67
 

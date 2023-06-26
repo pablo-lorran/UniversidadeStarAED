@@ -82,10 +82,6 @@ public class Curso {
                 + ", listaAprovados=" + listaAprovados + ", filaEspera=" + filaEspera + "]";
     }
 
-    public ArrayList<Candidato> getCandidatos() {
-        return listaAprovados;
-    }
-
     public void decrementarVagasDisponiveis() {
         if (qtdVagas > 0) {
             qtdVagas--;

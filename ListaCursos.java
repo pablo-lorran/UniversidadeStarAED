@@ -37,12 +37,12 @@ public class ListaCursos {
     }
 
     public void adicionaAprovado(int codigoCurso, Candidato candidato) {
-    Curso curso = pesquisar(codigoCurso);
-    if (curso != null) {
-        curso.getCandidatos().add(candidato);
-    } else {
-        System.out.println("Curso não encontrado!");
+        Curso curso = pesquisar(codigoCurso);
+        if (curso != null) {
+            curso.getListaAprovados().add(candidato);
+        } else {
+            System.out.println("Curso não encontrado!");
+        }
     }
-}
 
 }
