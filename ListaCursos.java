@@ -1,4 +1,3 @@
-
 public class ListaCursos {
     private CelulaCurso primeiro;
     private CelulaCurso ultimo;
@@ -9,8 +8,10 @@ public class ListaCursos {
     }
 
     public void inserirFim(Curso x) {
-        ultimo.prox = new CelulaCurso();
-        ultimo = ultimo.prox;
+        CelulaCurso novaCelula = new CelulaCurso();
+        novaCelula.elemento = x;
+        ultimo.prox = novaCelula;
+        ultimo = novaCelula;
     }
 
     public String exibirCursos() {
@@ -22,19 +23,16 @@ public class ListaCursos {
             tmp = tmp.prox;
         }
         return exibe;
-
     }
 
     public Curso pesquisar(int codigoCurso) {
         CelulaCurso tmp = primeiro.prox;
         while (tmp != null) {
-            if (tmp.elemento.getCodCurso() == codigoCurso) {
+            if (tmp.elemento != null && tmp.elemento.getCodCurso() == codigoCurso) {
                 return tmp.elemento;
             }
             tmp = tmp.prox;
         }
         return null;
-
     }
-
 }

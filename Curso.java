@@ -7,11 +7,11 @@ public class Curso {
     private String nomeCurso;
     private int qtdVagas;
     private ArrayList<Candidato> listaAprovados;
-    private Queue<Candidato> listaEspera;
-  
-    public Curso(){
+    private Queue<Candidato> filaEspera;
+
+    public Curso() {
         listaAprovados = new ArrayList<>();
-        listaEspera = new LinkedList<>();
+        filaEspera = new LinkedList<>();
     }
 
     public Curso(int codCurso, String nomeCurso, int qtdVagas) {
@@ -19,21 +19,20 @@ public class Curso {
         this.nomeCurso = nomeCurso;
         this.qtdVagas = qtdVagas;
         listaAprovados = new ArrayList<>();
-        listaEspera = new LinkedList<>();
+        filaEspera = new LinkedList<>();
     }
 
-    public boolean inserirListaAprovados(Candidato candidato){
-        if(listaAprovados.size() < qtdVagas){
+    public boolean inserirListaAprovados(Candidato candidato) {
+        if (listaAprovados.size() < qtdVagas) {
             listaAprovados.add(candidato);
             return true;
         }
         return false;
     }
 
-    public void inserirFilaEspera(Candidato candidato){
-        listaEspera.add(candidato);
+    public void inserirFilaEspera(Candidato candidato) {
+        filaEspera.add(candidato);
     }
-
 
     public int getCodCurso() {
         return codCurso;
@@ -67,21 +66,59 @@ public class Curso {
         this.listaAprovados = listaAprovados;
     }
 
-    public Queue<Candidato> getListaEspera() {
-        return listaEspera;
+    public Queue<Candidato> getFilaEspera() {
+        return filaEspera;
     }
 
-    public void setListaEspera(Queue<Candidato> listaEspera) {
-        this.listaEspera = listaEspera;
+    public void setFilaEspera(Queue<Candidato> filaEspera) {
+        this.filaEspera = filaEspera;
     }
 
     @Override
     public String toString() {
         return "Curso [codCurso=" + codCurso + ", nomeCurso=" + nomeCurso + ", qtdVagas=" + qtdVagas
-                + ", listaAprovados=" + listaAprovados + ", listaEspera=" + listaEspera + "]";
+                + ", listaAprovados=" + listaAprovados + ", filaEspera=" + filaEspera + "]";
     }
 
-    
-    
+    public void decrementarVagasDisponiveis() {
+        qtdVagas--;
+    }
+
+    public double getNotaCorte() {
+        if (listaAprovados.isEmpty()) {
+            return 0;
+        }
+        double somaTotal = 0;
+
+        for (Candidato candidato : listaAprovados) {
+            somaTotal += candidato.getNotaMedia();
+        }
+
+        if (listaAprovados.size() > 1) {
+            boolean criterioDesempate = true;
+            double notaCorte = listaAprovados.get(0).getNotaMedia();
+
+            for (Candidato candidato : listaAprovados) {
+                if (candidato.getNotaMedia() != notaCorte) {
+                    criterioDesempate = false;
+                }
+            }
+
+            if (criterioDesempate) {
+                double maiorNotaRed = 0;
+                for (Candidato candidato : listaAprovados) {
+                    double notaRed = candidato.getNotaRed();
+
+                    if (notaRed > maiorNotaRed) {
+                        maiorNotaRed = notaRed;
+                    }
+                }
+
+                somaTotal += maiorNotaRed;
+            }
+        }
+
+        return somaTotal / listaAprovados.size();
+    }
 
 }

@@ -1,7 +1,12 @@
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
+import java.util.Locale;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Vestibular {
@@ -24,18 +29,17 @@ public class Vestibular {
         this.qtdCandidatos = qtdCandidatos;
     }
 
-    public void ordenarCandidatos() {
-
-    }
-
     public void arquivoEntrada(String arqEntrada) {
         try {
             Scanner arqLeitura = new Scanner(new FileInputStream(arqEntrada), "UTF-8");
 
             String lendoMN = arqLeitura.nextLine();
             String[] NM = lendoMN.split(";");
-            int qtdCursos = Integer.parseInt(NM[0]);
-            int qtdCandidatos = Integer.parseInt(NM[1]);
+            qtdCursos = Integer.parseInt(NM[0]);
+            qtdCandidatos = Integer.parseInt(NM[1]);
+
+            cursos = new ListaCursos();
+            candidatos = new Candidato[qtdCandidatos];
 
             for (int i = 0; i < qtdCursos; i++) {
                 String linhaN = arqLeitura.nextLine();
@@ -62,66 +66,102 @@ public class Vestibular {
             }
 
         } catch (IOException e) {
-            System.out.println("Erro na leitura do arquivo de entrada!");
+            System.out.println("Erro na leitura do arquivo!");
         } catch (NumberFormatException e) {
             System.out.println("Erro na conversão de um valor numérico no arquivo de entrada!");
-
         }
     }
 
     public void arquivoSaida(String arqSaida) {
         try {
-            Formatter formatter = new Formatter(arqSaida, "UTF-8");
+            Formatter arqEscrita = new Formatter(arqSaida, "UTF-8");
 
-            for (int i = 0; i < qtdCursos; i++) {
-                Curso curso = cursos.pesquisar(i + 1);
-                formatter.format("%s %.2f%n", curso.getNomeCurso(),
-                        curso.getListaAprovados().get(curso.getListaAprovados().size() - 1).getnotaMedia());
+            for (int i = 1; i <= qtdCursos; i++) {
+                Curso curso = cursos.pesquisar(i);
+                if (curso != null) {
+                    List<Candidato> listaAprovados = curso.getListaAprovados();
+                    if (!listaAprovados.isEmpty()) {
+                        Candidato ultimoAprovado = listaAprovados.get(listaAprovados.size() - 1);
+                        arqEscrita.format("%s %.2f\n", curso.getNomeCurso(), ultimoAprovado.getNotaMedia());
+                        arqEscrita.format("Selecionados\n");
+                        for (Candidato candidato : listaAprovados) {
+                            arqEscrita.format("%s %.2f\n", candidato.getNomeCandidato(), candidato.getNotaMedia());
+                        }
+                        arqEscrita.format("Fila de Espera\n");
+                        Queue<Candidato> filaEspera = curso.getFilaEspera();
+                        for (Candidato candidato : filaEspera) {
+                            arqEscrita.format("%s %.2f\n", candidato.getNomeCandidato(), candidato.getNotaMedia());
+                        }
+                        arqEscrita.format("\n");
+                    } else {
+                        arqEscrita.format("%s Nenhum candidato aprovado\n\n", curso.getNomeCurso());
+                    }
+                }
             }
 
-            for (int j = 0; j < qtdCandidatos; j++) {
-                formatter.format("%s %.2f%n", candidatos[j].getNomeCandidato(), candidatos[j].getnotaMedia());
-            }
-
-            formatter.close();
+            arqEscrita.close();
+            System.out.println("Arquivo de saída gerado com sucesso!");
         } catch (IOException e) {
-            System.out.println("ERRO!");
+            System.out.println("Erro na gravação do arquivo de saída!");
         }
     }
 
-    public void ordenaDados() {
-
+    public void ordenaDados(Candidato candidato[], int esq, int dir) {
+        int i = esq, j = dir;
+        Candidato pivo = candidato[(esq + dir) / 2];
+        while (i <= j) {
+            while (candidato[i].getNotaMedia() > pivo.getNotaMedia()) {
+                i++;
+            }
+            while (candidato[j].getNotaMedia() < pivo.getNotaMedia()) {
+                j--;
+            }
+            if (i <= j) {
+                Candidato tmp = candidato[i];
+                candidato[i] = candidato[j];
+                candidato[j] = tmp;
+                i++;
+                j--;
+            }
+            if (esq < j) {
+                ordenaDados(candidato, esq, j);
+            }
+            if (i < dir) {
+                ordenaDados(candidato, i, dir);
+            }
+        }
     }
 
     public void calcularResultado() {
+        ordenaDados(candidatos, 0, qtdCandidatos - 1);
         for (int i = 0; i < qtdCandidatos; i++) {
             Candidato candidato = candidatos[i];
             Curso op1Curso = cursos.pesquisar(candidato.getCodCursoOp1());
             Curso op2Curso = cursos.pesquisar(candidato.getCodCursoOp2());
 
-            if (op1Curso.inserirListaAprovados(candidato)) {
-                if (op2Curso.inserirListaAprovados(candidato)) {
-                    op2Curso.getListaAprovados().remove(candidato);
-                    op1Curso.inserirListaAprovados(candidato);
+            if (op1Curso != null && candidato.getNotaMedia() >= op1Curso.getNotaCorte()) {
+                if (op1Curso.inserirListaAprovados(candidato)) {
+                    op1Curso.decrementarVagasDisponiveis();
+                    if (op2Curso != null) {
+                        op2Curso.inserirFilaEspera(candidato);
+                        ;
+                    }
+                } else if (op2Curso != null && candidato.getNotaMedia() >= op2Curso.getNotaCorte()) {
+                    if (op2Curso.inserirListaAprovados(candidato)) {
+                        op2Curso.decrementarVagasDisponiveis();
+                        if (op1Curso != null) {
+                            op1Curso.inserirFilaEspera(candidato);
+                        }
+                    }
                 }
-            } else {
-                op1Curso.inserirFilaEspera(candidato);
-                op2Curso.inserirFilaEspera(candidato);
-            }
-        }
 
-        for (int i = 0; i < qtdCursos; i++) {
-            Curso curso = cursos.pesquisar(i + 1);
-            System.out.println("Curso: " + curso.getNomeCurso());
-            System.out.println("Selecionados:");
-            for (Candidato candidato : curso.getListaAprovados()) {
-                System.out.println(candidato.getNomeCandidato() + " " + candidato.getnotaMedia());
-            }
-            System.out.println("Fila de Espera:");
-            for (Candidato candidato : curso.getListaEspera()) {
-                System.out.println(candidato.getNomeCandidato() + " " + candidato.getnotaMedia());
+                if (op1Curso != null) {
+                    op1Curso.inserirFilaEspera(candidato);
+                }
+                if (op2Curso != null) {
+                    op2Curso.inserirFilaEspera(candidato);
+                }
             }
         }
     }
-
 }

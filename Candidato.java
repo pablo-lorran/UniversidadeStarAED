@@ -70,7 +70,7 @@ public class Candidato {
         this.notaMedia = (notaRed + notaMat + notaLing) / 3;
     }
 
-    public double getnotaMedia() {
+    public double getNotaMedia() {
         return (notaRed + notaMat + notaLing) / 3;
     }
 
