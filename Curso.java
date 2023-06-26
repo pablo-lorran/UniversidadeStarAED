@@ -23,7 +23,7 @@ public class Curso {
     }
 
     public boolean inserirListaAprovados(Candidato candidato) {
-        if (listaAprovados.size() < qtdVagas) {
+        if (listaAprovados.size() < qtdVagas && !listaAprovados.contains(candidato)) {
             listaAprovados.add(candidato);
             return true;
         }
@@ -31,7 +31,9 @@ public class Curso {
     }
 
     public void inserirFilaEspera(Candidato candidato) {
-        filaEspera.add(candidato);
+        if (!filaEspera.contains(candidato)) {
+            filaEspera.add(candidato);
+        }
     }
 
     public int getCodCurso() {
@@ -80,8 +82,14 @@ public class Curso {
                 + ", listaAprovados=" + listaAprovados + ", filaEspera=" + filaEspera + "]";
     }
 
+    public ArrayList<Candidato> getCandidatos() {
+        return listaAprovados;
+    }
+
     public void decrementarVagasDisponiveis() {
-        qtdVagas--;
+        if (qtdVagas > 0) {
+            qtdVagas--;
+        }
     }
 
     public double getNotaCorte() {

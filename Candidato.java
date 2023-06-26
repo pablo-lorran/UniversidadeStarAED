@@ -66,8 +66,8 @@ public class Candidato {
         this.codCursoOp2 = codCursoOp2;
     }
 
-    public void setMedia(int notaMedia) {
-        this.notaMedia = (notaRed + notaMat + notaLing) / 3;
+    public void setMedia(double notaMedia) {
+        this.notaMedia = notaMedia;
     }
 
     public double getNotaMedia() {

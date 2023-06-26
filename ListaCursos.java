@@ -35,4 +35,14 @@ public class ListaCursos {
         }
         return null;
     }
+
+    public void adicionaAprovado(int codigoCurso, Candidato candidato) {
+    Curso curso = pesquisar(codigoCurso);
+    if (curso != null) {
+        curso.getCandidatos().add(candidato);
+    } else {
+        System.out.println("Curso não encontrado!");
+    }
+}
+
 }

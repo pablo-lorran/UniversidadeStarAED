@@ -1,40 +1,42 @@
-Administração 916,67
+Administra��o 875.00
 Selecionados
-Gabriela Almeida 916,67
+Gabriela Almeida 916.67
+Diego Oliveira 833.33
 Fila de Espera
-Gabriela Almeida 916,67
-Patrícia Costa 900,00
-Patrícia Costa 900,00
-Guilherme Souza 816,67
-Guilherme Souza 816,67
+Diego Oliveira 833.33
+Guilherme Souza 816.67
+Roberto Lima 683.33
 
-Contabilidade 800,00
+Contabilidade 744.44
 Selecionados
-Marcelo Lima 800,00
+Marcelo Lima 800.00
+Larissa Silva 733.33
+Amanda Souza 700.00
 Fila de Espera
-Marcelo Lima 800,00
-Isabela Rodrigues 733,33
-Isabela Rodrigues 733,33
+Larissa Silva 733.33
+Amanda Souza 700.00
+Andre Santos 600.00
 
-Enfermagem 733,33
+Enfermagem 733.33
 Selecionados
-Isabela Rodrigues 733,33
+Isabela Rodrigues 733.33
 Fila de Espera
-Gabriela Almeida 916,67
-Gabriela Almeida 916,67
-Isabela Rodrigues 733,33
+Amanda Souza 700.00
 
-Pedagogia 900,00
+Pedagogia 791.67
 Selecionados
-Patrícia Costa 900,00
+Patr�cia Costa 900.00
+Roberto Lima 683.33
 Fila de Espera
-Patrícia Costa 900,00
-Marcelo Lima 800,00
-Marcelo Lima 800,00
+Roberto Lima 683.33
 
-Radiologia 816,67
+Radiologia 750.00
 Selecionados
-Guilherme Souza 816,67
+Diego Oliveira 833.33
+Guilherme Souza 816.67
+Andre Santos 600.00
 Fila de Espera
-Guilherme Souza 816,67
+Guilherme Souza 816.67
+Larissa Silva 733.33
+Andre Santos 600.00
 
