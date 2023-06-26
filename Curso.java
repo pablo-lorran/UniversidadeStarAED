@@ -8,6 +8,7 @@ public class Curso {
     private int qtdVagas;
     private ArrayList<Candidato> listaAprovados;
     private Queue<Candidato> filaEspera;
+    private double notaCorte;
 
     public Curso() {
         listaAprovados = new ArrayList<>();
@@ -20,20 +21,6 @@ public class Curso {
         this.qtdVagas = qtdVagas;
         listaAprovados = new ArrayList<>();
         filaEspera = new LinkedList<>();
-    }
-
-    public boolean inserirListaAprovados(Candidato candidato) {
-        if (listaAprovados.size() < qtdVagas && !listaAprovados.contains(candidato)) {
-            listaAprovados.add(candidato);
-            return true;
-        }
-        return false;
-    }
-
-    public void inserirFilaEspera(Candidato candidato) {
-        if (!filaEspera.contains(candidato)) {
-            filaEspera.add(candidato);
-        }
     }
 
     public int getCodCurso() {
@@ -76,53 +63,72 @@ public class Curso {
         this.filaEspera = filaEspera;
     }
 
-    @Override
-    public String toString() {
-        return "Curso [codCurso=" + codCurso + ", nomeCurso=" + nomeCurso + ", qtdVagas=" + qtdVagas
-                + ", listaAprovados=" + listaAprovados + ", filaEspera=" + filaEspera + "]";
-    }
-
     public void decrementarVagasDisponiveis() {
         if (qtdVagas > 0) {
             qtdVagas--;
         }
     }
 
+    @Override
+    public String toString() {
+        return "Curso [codCurso=" + codCurso + ", nomeCurso=" + nomeCurso + ", qtdVagas=" + qtdVagas
+                + ", listaAprovados=" + listaAprovados + ", filaEspera=" + filaEspera + "]";
+    }
+
+    public boolean inserirListaAprovados(Candidato candidato) {
+        if (listaAprovados.size() < qtdVagas && !listaAprovados.contains(candidato)) {
+            listaAprovados.add(candidato);
+            setNotaCorte(candidato.getNotaMedia());
+            return true;
+        }
+        return false;
+    }
+
+    public void inserirFilaEspera(Candidato candidato) {
+        if (!listaAprovados.contains(candidato) && !filaEspera.contains(candidato)) {
+            Queue<Candidato> filaTemp = new LinkedList<>();
+
+            while (!filaEspera.isEmpty() && filaEspera.peek().getNotaMedia() > candidato.getNotaMedia()) {
+                filaTemp.add(filaEspera.poll());
+            }
+
+            filaTemp.add(candidato);
+
+            filaEspera = filaTemp;
+        }
+    }
+
+    public void setNotaCorte(double notaCorte) {
+        this.notaCorte = notaCorte;
+    }
+
     public double getNotaCorte() {
         if (listaAprovados.isEmpty()) {
             return 0;
         }
-        double somaTotal = 0;
+
+        double menorNota = listaAprovados.get(0).getNotaMedia();
 
         for (Candidato candidato : listaAprovados) {
-            somaTotal += candidato.getNotaMedia();
+            if (candidato.getNotaMedia() < menorNota) {
+                menorNota = candidato.getNotaMedia();
+            }
         }
 
-        if (listaAprovados.size() > 1) {
-            boolean criterioDesempate = true;
-            double notaCorte = listaAprovados.get(0).getNotaMedia();
+        return menorNota;
+    }
+
+    public void atualizaNotaCorte() {
+        if (!listaAprovados.isEmpty()) {
+            double menorNota = 0;
 
             for (Candidato candidato : listaAprovados) {
-                if (candidato.getNotaMedia() != notaCorte) {
-                    criterioDesempate = false;
+                if (candidato.getNotaMedia() < menorNota) {
+                    menorNota = candidato.getNotaMedia();
                 }
             }
-
-            if (criterioDesempate) {
-                double maiorNotaRed = 0;
-                for (Candidato candidato : listaAprovados) {
-                    double notaRed = candidato.getNotaRed();
-
-                    if (notaRed > maiorNotaRed) {
-                        maiorNotaRed = notaRed;
-                    }
-                }
-
-                somaTotal += maiorNotaRed;
-            }
+            notaCorte = menorNota;
         }
-
-        return somaTotal / listaAprovados.size();
     }
 
 }

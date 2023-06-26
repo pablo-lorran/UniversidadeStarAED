@@ -71,7 +71,8 @@ public class Candidato {
     }
 
     public double getNotaMedia() {
-        return (notaRed + notaMat + notaLing) / 3;
+        notaMedia = (notaRed + notaMat + notaLing) / 3;
+        return notaMedia;
     }
 
     public String toString() {

@@ -19,7 +19,7 @@ public class ListaCursos {
         CelulaCurso tmp = primeiro.prox;
 
         while (tmp != null) {
-            exibe += tmp.elemento.toString();
+            exibe += tmp.elemento.toString() + "\n";
             tmp = tmp.prox;
         }
         return exibe;

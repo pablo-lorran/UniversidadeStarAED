@@ -1,36 +1,29 @@
-Matem·tica 733.33
-Selecionados
-Mickey Mouse 766.67
-Pato Donald 733.33
-Bob Esponja 700.00
+Matem√°tica - Nota de corte: 700,00
+Candidatos Aprovados na Chamada Regular
+Mickey Mouse 766,67
+Pato Donald 733,33
+Bob Esponja 700,00
 Fila de Espera
-Pato Donald 733.33
-Bob Esponja 700.00
 
-FÌsica 733.33
-Selecionados
-Pato Donald 733.33
+F√≠sica - Nota de corte: 0,00
+Candidatos Aprovados na Chamada Regular
 Fila de Espera
-Bob Esponja 700.00
-Tio Patinhas 666.67
-Peppa Pig 633.33
+Mickey Mouse 766,67
+Pato Donald 733,33
+Bob Esponja 700,00
+Tio Patinhas 666,67
+Peppa Pig 633,33
 
-QuÌmica 738.89
-Selecionados
-Deadpool 800.00
-Peter Parker 783.33
-Peppa Pig 633.33
+Qu√≠mica - Nota de corte: 633,33
+Candidatos Aprovados na Chamada Regular
+Deadpool 800,00
+Peter Parker 783,33
+Peppa Pig 633,33
 Fila de Espera
-Peter Parker 783.33
-Peppa Pig 633.33
-Super Mario Bros 566.67
 
-EstatÌstica 672.22
-Selecionados
-Peter Parker 783.33
-Tio Patinhas 666.67
-Super Mario Bros 566.67
+Estat√≠stica - Nota de corte: 566,67
+Candidatos Aprovados na Chamada Regular
+Tio Patinhas 666,67
+Super Mario Bros 566,67
 Fila de Espera
-Tio Patinhas 666.67
-Super Mario Bros 566.67
 
