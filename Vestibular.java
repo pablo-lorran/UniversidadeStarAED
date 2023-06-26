@@ -36,6 +36,7 @@ public class Vestibular {
         try {
             Scanner arqLeitura = new Scanner(new FileInputStream(arqEntrada), "UTF-8");
 
+
             String lendoMN = arqLeitura.nextLine();
             String[] NM = lendoMN.split(";");
             qtdCursos = Integer.parseInt(NM[0]);
@@ -105,38 +106,38 @@ public class Vestibular {
     }
 
     public void calcularResultado() {
-    ordenaDados(candidatos, 0, qtdCandidatos - 1);
+        ordenaDados(candidatos, 0, qtdCandidatos - 1);
 
-    for (int i = 0; i < qtdCandidatos; i++) {
-        Candidato candidato = candidatos[i];
-        Curso op1Curso = cursos.pesquisar(candidato.getCodCursoOp1());
-        cursos.adicionaAprovado(candidato.getCodCursoOp1(), candidato);
-        Curso op2Curso = cursos.pesquisar(candidato.getCodCursoOp2());
+        for (int i = 0; i < qtdCandidatos; i++) {
+            Candidato candidato = candidatos[i];
+            Curso op1Curso = cursos.pesquisar(candidato.getCodCursoOp1());
+            cursos.adicionaAprovado(candidato.getCodCursoOp1(), candidato);
+            Curso op2Curso = cursos.pesquisar(candidato.getCodCursoOp2());
 
-        if (op1Curso != null && op1Curso.getNomeCurso().equals("Física")) {
-            if (candidato.getNotaMedia() > op1Curso.getNotaCorte() && !aprovadoOutroCurso(candidato, op1Curso)) {
+            if (op1Curso != null && candidato.getNotaMedia() > op1Curso.getNotaCorte()
+                    && !aprovadoOutroCurso(candidato, op1Curso)) {
                 if (op1Curso.inserirListaAprovados(candidato)) {
                     op1Curso.decrementarVagasDisponiveis();
                     op1Curso.atualizaNotaCorte();
                 }
-            } else {
-                op1Curso.inserirFilaEspera(candidato);
-            }
-        }
-
-        if (op2Curso != null && op2Curso.getNomeCurso().equals("Física")) {
-            if (candidato.getNotaMedia() > op2Curso.getNotaCorte() && !aprovadoOutroCurso(candidato, op2Curso)) {
+            } else if (op2Curso != null && candidato.getNotaMedia() > op2Curso.getNotaCorte()
+                    && !aprovadoOutroCurso(candidato, op2Curso)) {
                 if (op2Curso.inserirListaAprovados(candidato)) {
                     op2Curso.decrementarVagasDisponiveis();
                     op2Curso.atualizaNotaCorte();
                 }
-            } else {
+            } else if (op1Curso != null && candidato.getNotaMedia() > op1Curso.getNotaCorte() && op2Curso != null
+                    && candidato.getNotaMedia() > op2Curso.getNotaCorte()) {
+                op1Curso.inserirListaAprovados(candidato);
+                op1Curso.decrementarVagasDisponiveis();
+                op1Curso.atualizaNotaCorte();
+            } else if(op1Curso != null && op2Curso != null){
+                op1Curso.inserirFilaEspera(candidato);
                 op2Curso.inserirFilaEspera(candidato);
             }
+            }
         }
-    }
-}
-
+    
 
     private boolean aprovadoOutroCurso(Candidato candidato, Curso cursoAtual) {
         for (int i = 1; i <= qtdCursos; i++) {
@@ -153,30 +154,29 @@ public class Vestibular {
 
     public void arquivoSaida(String arqSaida) {
         try {
-            BufferedWriter arqEscrita = new BufferedWriter(
-                    new OutputStreamWriter(new FileOutputStream(arqSaida), StandardCharsets.UTF_8));
+            BufferedWriter arqEscrita = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arqSaida), StandardCharsets.UTF_8));
+
 
             for (int i = 1; i <= qtdCursos; i++) {
                 Curso curso = cursos.pesquisar(i);
                 if (curso != null) {
-                    arqEscrita.write(
-                            String.format("%s - Nota de corte: %.2f\n", curso.getNomeCurso(), curso.getNotaCorte()));
+                    arqEscrita.write(String.format("%s - Nota de corte: %.2f\n", curso.getNomeCurso(),curso.getNotaCorte()));
                     arqEscrita.write("Candidatos Aprovados na Chamada Regular\n");
                     List<Candidato> listaAprovados = curso.getListaAprovados();
-                    if (!listaAprovados.isEmpty()) {
-                        for (Candidato candidato : listaAprovados) {
-                            arqEscrita.write(String.format("%s %.2f\n", candidato.getNomeCandidato(),
-                                    candidato.getNotaMedia()));
-                        }
+                    if(!listaAprovados.isEmpty()){
+                    for (Candidato candidato : listaAprovados) {
+                        arqEscrita.write(String.format("%s %.2f\n", candidato.getNomeCandidato(),
+                                candidato.getNotaMedia()));
                     }
+                }
                     arqEscrita.write("Fila de Espera\n");
                     Queue<Candidato> filaEspera = curso.getFilaEspera();
-                    if (!filaEspera.isEmpty()) {
-                        for (Candidato candidato : filaEspera) {
-                            arqEscrita.write(String.format("%s %.2f\n", candidato.getNomeCandidato(),
-                                    candidato.getNotaMedia()));
-                        }
+                if(!filaEspera.isEmpty()){
+                    for (Candidato candidato : filaEspera) {
+                        arqEscrita.write(String.format("%s %.2f\n", candidato.getNomeCandidato(),
+                                candidato.getNotaMedia()));
                     }
+                }
                     arqEscrita.write("\n");
                 } else {
                     arqEscrita.write(

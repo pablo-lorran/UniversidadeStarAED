@@ -84,19 +84,22 @@ public class Curso {
         return false;
     }
 
-    public void inserirFilaEspera(Candidato candidato) {
-        if (!listaAprovados.contains(candidato) && !filaEspera.contains(candidato)) {
-            Queue<Candidato> filaTemp = new LinkedList<>();
+    public boolean inserirFilaEspera(Candidato candidato) {
+    if (!listaAprovados.contains(candidato) && !filaEspera.contains(candidato)) {
+        Queue<Candidato> filaTemp = new LinkedList<>();
 
-            while (!filaEspera.isEmpty() && filaEspera.peek().getNotaMedia() > candidato.getNotaMedia()) {
-                filaTemp.add(filaEspera.poll());
-            }
-
-            filaTemp.add(candidato);
-
-            filaEspera = filaTemp;
+        while (!filaEspera.isEmpty() && filaEspera.peek().getNotaMedia() > candidato.getNotaMedia()) {
+            filaTemp.add(filaEspera.poll());
         }
+
+        filaTemp.add(candidato);
+        filaEspera = filaTemp;
+        return true;
     }
+    return false;
+}
+
+
 
     public void setNotaCorte(double notaCorte) {
         this.notaCorte = notaCorte;
@@ -131,4 +134,5 @@ public class Curso {
         }
     }
 
+  
 }

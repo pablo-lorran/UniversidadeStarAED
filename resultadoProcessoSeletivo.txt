@@ -20,10 +20,13 @@ Deadpool 800,00
 Peter Parker 783,33
 Peppa Pig 633,33
 Fila de Espera
+Super Mario Bros 566,67
 
 Estatística - Nota de corte: 566,67
 Candidatos Aprovados na Chamada Regular
 Tio Patinhas 666,67
 Super Mario Bros 566,67
 Fila de Espera
+Deadpool 800,00
+Peter Parker 783,33
 

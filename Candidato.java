@@ -1,4 +1,3 @@
-
 public class Candidato {
     private String nomeCandidato;
     private double notaRed;
